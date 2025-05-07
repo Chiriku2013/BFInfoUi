@@ -16,7 +16,7 @@ background.BackgroundTransparency = 0.4
 background.Visible = true
 background.Parent = gui
 
--- Top Title
+-- Top Title (Blox Fruits Info Ui)
 local topText = Instance.new("TextLabel")
 topText.Size = UDim2.new(1, 0, 0.1, 0)
 topText.Position = UDim2.new(0, 0, 0, 0)
@@ -75,7 +75,7 @@ corner.CornerRadius = UDim.new(0, 12)
 corner.Parent = toggleButton
 
 -- Toggle Function
-local isOpen = false
+local isOpen = true  -- Auto bật UI khi vào game
 toggleButton.MouseButton1Click:Connect(function()
 	isOpen = not isOpen
 	local tweenInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
@@ -105,34 +105,13 @@ spawn(function()
 			local level = player.Data.Level.Value
 			local beli = player.Data.Beli.Value
 			local frags = player.Data.Fragments.Value
-			local race = player.Data.Race.Value
-			local fps = game:GetService("Stats").PerformanceStats.Fps
-			local ping = game:GetService("Stats").PerformanceStats.Ping
-			local sea = player.Data.Sea.Value
 
-			-- Color for Race
-			local raceColor = Color3.fromRGB(255, 255, 255)  -- Default white
-			if race == "Human" then raceColor = Color3.fromRGB(255, 0, 0) 
-			elseif race == "Mink" then raceColor = Color3.fromRGB(0, 255, 0)
-			elseif race == "Shark" then raceColor = Color3.fromRGB(0, 0, 255)
-			elseif race == "Angel" then raceColor = Color3.fromRGB(255, 255, 0)
-			elseif race == "Ghoul" then raceColor = Color3.fromRGB(139, 0, 0)
-			elseif race == "Cyborg" then raceColor = Color3.fromRGB(128, 0, 128)
-			elseif race == "Draco" then raceColor = Color3.fromRGB(255, 165, 0) end
-
-			-- Update Info Label with RichText
 			infoLabel.Text = string.format(
-				"Player: %s | Level: <font color='rgb(255,255,0)'>%s</font> | Beli: <font color='rgb(0,255,0)'>%s</font> | Fragments: <font color='rgb(255,0,255)'>%s</font>\n" ..
-				"Race: <font color='%s'>%s</font> | FPS: <font color='rgb(0,255,0)'>%s</font> | Ping: <font color='rgb(255,0,0)'>%s ms</font> | Sea: %s",
+				"Player: %s | Level: <font color='rgb(255,255,0)'>%s</font> | Beli: <font color='rgb(0,255,0)'>%s</font> | Fragments: <font color='rgb(255,0,255)'>%s</font>",
 				maskedName,
 				level,
 				beli,
-				frags,
-				raceColor:ToHex(),
-				race,
-				fps,
-				ping,
-				sea
+				frags
 			)
 			infoLabel.RichText = true
 		end)
