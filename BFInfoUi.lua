@@ -1,22 +1,18 @@
 local player = game.Players.LocalPlayer
-local TweenService = game:GetService("TweenService")
 
--- UI Setup
 local gui = Instance.new("ScreenGui")
-gui.Name = "DoughOverlay"
+gui.Name = "BloxFruitsInfoUi"
 gui.ResetOnSpawn = false
 gui.IgnoreGuiInset = true
 gui.Parent = player:WaitForChild("PlayerGui")
 
 local background = Instance.new("Frame")
 background.Size = UDim2.new(1, 0, 1, 0)
-background.Position = UDim2.new(0, 0, -1, 0)
 background.BackgroundColor3 = Color3.new(0, 0, 0)
 background.BackgroundTransparency = 0.4
 background.Visible = true
 background.Parent = gui
 
--- Top Title
 local topText = Instance.new("TextLabel")
 topText.Size = UDim2.new(1, 0, 0.1, 0)
 topText.Position = UDim2.new(0, 0, 0, 0)
@@ -27,7 +23,16 @@ topText.TextScaled = true
 topText.Font = Enum.Font.FredokaOne
 topText.Parent = background
 
--- Time Label
+local statusText = Instance.new("TextLabel")
+statusText.Size = UDim2.new(1, 0, 0.05, 0)
+statusText.Position = UDim2.new(0, 0, 0.08, 0)
+statusText.BackgroundTransparency = 1
+statusText.Text = "Status: ..."
+statusText.TextColor3 = Color3.fromRGB(255, 255, 255)
+statusText.TextScaled = true
+statusText.Font = Enum.Font.FredokaOne
+statusText.Parent = background
+
 local timeLabel = Instance.new("TextLabel")
 timeLabel.Size = UDim2.new(1, 0, 0.04, 0)
 timeLabel.Position = UDim2.new(0, 0, 0.9, 0)
@@ -38,15 +43,13 @@ timeLabel.TextScaled = true
 timeLabel.Font = Enum.Font.FredokaOne
 timeLabel.Parent = background
 
--- Logo
 local logo = Instance.new("ImageLabel")
 logo.Size = UDim2.new(0, 200, 0, 200)
 logo.Position = UDim2.new(0.5, -100, 0.4, -100)
 logo.BackgroundTransparency = 1
-logo.Image = "rbxassetid://ID_IMAGE" -- Thay ID tại đây
+logo.Image = "rbxassetid://ID_IMAGE"
 logo.Parent = background
 
--- Info Label
 local infoLabel = Instance.new("TextLabel")
 infoLabel.Size = UDim2.new(0.95, 0, 0.05, 0)
 infoLabel.Position = UDim2.new(0.025, 0, 0.94, 0)
@@ -57,7 +60,6 @@ infoLabel.Font = Enum.Font.FredokaOne
 infoLabel.Text = "Loading..."
 infoLabel.Parent = background
 
--- Toggle Button
 local toggleButton = Instance.new("TextButton")
 toggleButton.Size = UDim2.new(0, 120, 0, 40)
 toggleButton.Position = UDim2.new(0, 15, 0, 70)
@@ -74,17 +76,13 @@ local corner = Instance.new("UICorner")
 corner.CornerRadius = UDim.new(0, 12)
 corner.Parent = toggleButton
 
--- Toggle Function
 local isOpen = false
 toggleButton.MouseButton1Click:Connect(function()
 	isOpen = not isOpen
-	local tweenInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-	local targetPos = isOpen and UDim2.new(0, 0, 0, 0) or UDim2.new(0, 0, -1, 0)
-	TweenService:Create(background, tweenInfo, {Position = targetPos}):Play()
+	background.Visible = isOpen
 	toggleButton.Text = isOpen and "Close" or "Open"
 end)
 
--- Time Counter
 local seconds = 0
 spawn(function()
 	while wait(1) do
@@ -96,24 +94,44 @@ spawn(function()
 	end
 end)
 
--- Info Updating
 spawn(function()
 	while wait(1) do
 		pcall(function()
-			local name = player.DisplayName
-			local maskedName = string.sub(name, 1, 6) .. string.rep("*", #name - 6)
 			local level = player.Data.Level.Value
 			local beli = player.Data.Beli.Value
 			local frags = player.Data.Fragments.Value
+			local fps = game:GetService("Stats").PerformanceStats.Fps
+			local ping = game:GetService("Stats").PerformanceStats.Ping
+			local sea = player.Data.Sea.Value
+
+			local maskedName = player.DisplayName:sub(1, 6) .. "****"
+
+			local race = player.Data.Race.Value
+			local raceColors = {
+				Human = "rgb(255,0,0)",
+				Mink = "rgb(0,255,0)",
+				Shark = "rgb(0,191,255)",
+				Angel = "rgb(255,255,0)",
+				Ghoul = "rgb(139,0,0)",
+				Cyborg = "rgb(138,43,226)",
+				Draco = "rgb(255,140,0)"
+			}
+			local raceColor = raceColors[race] or "rgb(255,255,255)" -- default white if unknown
 
 			infoLabel.Text = string.format(
-				"Player: %s | Level: <font color='rgb(255,255,0)'>%s</font> | Beli: <font color='rgb(0,255,0)'>%s</font> | Fragments: <font color='rgb(255,0,255)'>%s</font>",
+				"Player: %s | <font color='rgb(255,255,0)'>Level: %s</font> | <font color='rgb(0,255,0)'>Beli: %s</font> | <font color='rgb(255,0,255)'>Fragments: %s</font> | <font color='rgb(0,255,0)'>FPS: %s</font> | <font color='rgb(255,255,255)'>Ping: %sms</font> | <font color='rgb(255,255,255)'>Sea: %s</font> | <font color='%s'>Race: %s</font>",
 				maskedName,
 				level,
 				beli,
-				frags
+				frags,
+				fps,
+				ping,
+				sea,
+				raceColor, race
 			)
-			infoLabel.RichText = true
 		end)
 	end
 end)
+
+-- Automatically open the UI on execution
+gui.Enabled = true
