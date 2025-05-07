@@ -23,16 +23,6 @@ topText.TextScaled = true
 topText.Font = Enum.Font.FredokaOne
 topText.Parent = background
 
-local statusText = Instance.new("TextLabel")
-statusText.Size = UDim2.new(1, 0, 0.05, 0)
-statusText.Position = UDim2.new(0, 0, 0.08, 0)
-statusText.BackgroundTransparency = 1
-statusText.Text = "Status: ..."
-statusText.TextColor3 = Color3.fromRGB(255, 255, 255)
-statusText.TextScaled = true
-statusText.Font = Enum.Font.FredokaOne
-statusText.Parent = background
-
 local timeLabel = Instance.new("TextLabel")
 timeLabel.Size = UDim2.new(1, 0, 0.04, 0)
 timeLabel.Position = UDim2.new(0, 0, 0.9, 0)
@@ -47,7 +37,7 @@ local logo = Instance.new("ImageLabel")
 logo.Size = UDim2.new(0, 200, 0, 200)
 logo.Position = UDim2.new(0.5, -100, 0.4, -100)
 logo.BackgroundTransparency = 1
-logo.Image = "rbxassetid://ID_IMAGE"
+logo.Image = "rbxassetid://ID_IMAGE"  -- Thay ID hình ảnh logo
 logo.Parent = background
 
 local infoLabel = Instance.new("TextLabel")
