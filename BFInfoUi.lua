@@ -10,13 +10,13 @@ gui.Parent = player:WaitForChild("PlayerGui")
 
 local background = Instance.new("Frame")
 background.Size = UDim2.new(1, 0, 1, 0)
-background.Position = UDim2.new(0, 0, -1, 0)
+background.Position = UDim2.new(0, 0, 0, 0) -- Auto bật
 background.BackgroundColor3 = Color3.new(0, 0, 0)
 background.BackgroundTransparency = 0.4
 background.Visible = true
 background.Parent = gui
 
--- Top Title (Blox Fruits Info Ui)
+-- Top Title
 local topText = Instance.new("TextLabel")
 topText.Size = UDim2.new(1, 0, 0.1, 0)
 topText.Position = UDim2.new(0, 0, 0, 0)
@@ -43,7 +43,7 @@ local logo = Instance.new("ImageLabel")
 logo.Size = UDim2.new(0, 200, 0, 200)
 logo.Position = UDim2.new(0.5, -100, 0.4, -100)
 logo.BackgroundTransparency = 1
-logo.Image = "rbxassetid://ID_IMAGE" -- Thay ID tại đây
+logo.Image = "rbxassetid://ID_IMAGE" -- Thay ID tại đây nếu muốn có logo
 logo.Parent = background
 
 -- Info Label
@@ -55,6 +55,7 @@ infoLabel.TextColor3 = Color3.new(1, 1, 1)
 infoLabel.TextScaled = true
 infoLabel.Font = Enum.Font.FredokaOne
 infoLabel.Text = "Loading..."
+infoLabel.RichText = true
 infoLabel.Parent = background
 
 -- Toggle Button
@@ -64,7 +65,7 @@ toggleButton.Position = UDim2.new(0, 15, 0, 70)
 toggleButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 toggleButton.BackgroundTransparency = 0.1
 toggleButton.BorderSizePixel = 0
-toggleButton.Text = "Open"
+toggleButton.Text = "Close"
 toggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
 toggleButton.TextScaled = true
 toggleButton.Font = Enum.Font.GothamSemibold
@@ -75,7 +76,7 @@ corner.CornerRadius = UDim.new(0, 12)
 corner.Parent = toggleButton
 
 -- Toggle Function
-local isOpen = true  -- Auto bật UI khi vào game
+local isOpen = true
 toggleButton.MouseButton1Click:Connect(function()
 	isOpen = not isOpen
 	local tweenInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
@@ -100,20 +101,17 @@ end)
 spawn(function()
 	while wait(1) do
 		pcall(function()
-			local name = player.DisplayName
-			local maskedName = string.sub(name, 1, 6) .. string.rep("*", #name - 6)
 			local level = player.Data.Level.Value
 			local beli = player.Data.Beli.Value
 			local frags = player.Data.Fragments.Value
 
 			infoLabel.Text = string.format(
-				"Player: %s | Level: <font color='rgb(255,255,0)'>%s</font> | Beli: <font color='rgb(0,255,0)'>%s</font> | Fragments: <font color='rgb(255,0,255)'>%s</font>",
-				maskedName,
+				"<font color='rgb(255,255,255)'>Player: %s</font> | <font color='rgb(255,255,0)'>Level: %s</font> | <font color='rgb(0,255,0)'>Beli: %s</font> | <font color='rgb(255,0,255)'>Fragments: %s</font>",
+				player.Name,
 				level,
 				beli,
 				frags
 			)
-			infoLabel.RichText = true
 		end)
 	end
 end)
