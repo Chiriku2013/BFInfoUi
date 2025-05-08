@@ -10,7 +10,7 @@ gui.Parent = player:WaitForChild("PlayerGui")
 
 local background = Instance.new("Frame")
 background.Size = UDim2.new(1, 0, 1, 0)
-background.Position = UDim2.new(0, 0, 0, 0) -- Auto bật
+background.Position = UDim2.new(0, 0, 0, 0)
 background.BackgroundColor3 = Color3.new(0, 0, 0)
 background.BackgroundTransparency = 0.4
 background.Visible = true
@@ -43,7 +43,7 @@ local logo = Instance.new("ImageLabel")
 logo.Size = UDim2.new(0, 200, 0, 200)
 logo.Position = UDim2.new(0.5, -100, 0.4, -100)
 logo.BackgroundTransparency = 1
-logo.Image = "rbxassetid://ID_IMAGE" -- Thay ID tại đây nếu muốn có logo
+logo.Image = "rbxassetid://ID_IMAGE" -- Thay ID tại đây nếu cần
 logo.Parent = background
 
 -- Info Label
@@ -54,8 +54,8 @@ infoLabel.BackgroundTransparency = 1
 infoLabel.TextColor3 = Color3.new(1, 1, 1)
 infoLabel.TextScaled = true
 infoLabel.Font = Enum.Font.FredokaOne
-infoLabel.Text = "Loading..."
 infoLabel.RichText = true
+infoLabel.Text = "Loading..."
 infoLabel.Parent = background
 
 -- Toggle Button
@@ -104,10 +104,17 @@ spawn(function()
 			local level = player.Data.Level.Value
 			local beli = player.Data.Beli.Value
 			local frags = player.Data.Fragments.Value
+			local fullName = player.Name
+			local shortName = string.sub(fullName, 1, 6)
+			local hiddenPart = string.rep("*", math.max(0, #fullName - 6))
 
 			infoLabel.Text = string.format(
-				"<font color='rgb(255,255,255)'>Player: %s</font> | <font color='rgb(255,255,0)'>Level: %s</font> | <font color='rgb(0,255,0)'>Beli: %s</font> | <font color='rgb(255,0,255)'>Fragments: %s</font>",
-				player.Name,
+				"<font color='rgb(255,255,255)'>Player: %s%s</font> | " ..
+				"<font color='rgb(255,255,0)'>Level: %s</font> | " ..
+				"<font color='rgb(0,255,0)'>Beli: %s</font> | " ..
+				"<font color='rgb(255,0,255)'>Fragments: %s</font>",
+				shortName,
+				hiddenPart,
 				level,
 				beli,
 				frags
