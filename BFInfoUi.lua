@@ -10,7 +10,7 @@ gui.Parent = player:WaitForChild("PlayerGui")
 
 local background = Instance.new("Frame")
 background.Size = UDim2.new(1, 0, 1, 0)
-background.Position = UDim2.new(0, 0, -1, 0)
+background.Position = UDim2.new(0, 0, 0, 0)
 background.BackgroundColor3 = Color3.new(0, 0, 0)
 background.BackgroundTransparency = 0.4
 background.Visible = true
@@ -43,7 +43,7 @@ local logo = Instance.new("ImageLabel")
 logo.Size = UDim2.new(0, 200, 0, 200)
 logo.Position = UDim2.new(0.5, -100, 0.4, -100)
 logo.BackgroundTransparency = 1
-logo.Image = "rbxassetid://ID_IMAGE" -- Thay ID tại đây nếu có
+logo.Image = "rbxassetid://ID_IMAGE" -- Thay ID tại đây nếu muốn
 logo.Parent = background
 
 -- Info Label
@@ -88,7 +88,7 @@ end)
 -- Time Counter
 local seconds = 0
 spawn(function()
-	while task.wait(1) do
+	while wait(1) do
 		seconds += 1
 		local hrs = math.floor(seconds / 3600)
 		local mins = math.floor((seconds % 3600) / 60)
@@ -99,30 +99,29 @@ end)
 
 -- Info Updating
 spawn(function()
-	while task.wait(1) do
+	while wait(1) do
 		pcall(function()
-			local realName = player.Name
-			local masked = string.sub(realName, 1, 6) .. string.rep("*", #realName - 6)
+			local name = player.Name
+			local maskedName = string.sub(name, 1, 6) .. string.rep("*", #name - 6)
 			local level = player.Data.Level.Value
 			local beli = player.Data.Beli.Value
 			local frags = player.Data.Fragments.Value
 
 			infoLabel.Text = string.format(
-				"<font color='rgb(255,255,255)'>Player: %s | </font>" ..
-				"<font color='rgb(255, 255, 0)'>Level: %s</font> | " ..
-				"<font color='rgb(0, 255, 0)'>Beli: %s</font> | " ..
-				"<font color='rgb(255, 0, 255)'>Fragments: %s</font>",
-				masked, level, beli, frags
+				"<font color='rgb(255,255,255)'>Player: %s | </font><font color='rgb(255,255,0)'>Level: %s</font> | <font color='rgb(0,255,0)'>Beli: %s</font> | <font color='rgb(255,0,255)'>Fragments: %s</font>",
+				maskedName,
+				level,
+				beli,
+				frags
 			)
 		end)
 	end
 end)
 
--- Phát nhạc nền
+-- Music
 local sound = Instance.new("Sound")
-sound.Name = "BGM"
-sound.SoundId = "rbxassetid://127343237333461"
+sound.SoundId = "rbxassetid://9143539791" -- Lofi Chill Loop
 sound.Looped = true
-sound.Volume = 5 -- Âm lượng lớn
-sound.Parent = player:WaitForChild("PlayerGui")
-sound:Play()
+sound.Volume = 5
+sound.Playing = true
+sound.Parent = workspace
