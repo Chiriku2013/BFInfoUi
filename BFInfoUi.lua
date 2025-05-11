@@ -1,6 +1,5 @@
 local player = game.Players.LocalPlayer
 local TweenService = game:GetService("TweenService")
-local RunService = game:GetService("RunService")
 
 -- UI Setup
 local gui = Instance.new("ScreenGui")
@@ -11,12 +10,13 @@ gui.Parent = player:WaitForChild("PlayerGui")
 
 local background = Instance.new("Frame")
 background.Size = UDim2.new(1, 0, 1, 0)
-background.Position = UDim2.new(0, 0, 0, 0)
+background.Position = UDim2.new(0, 0, -1, 0)
 background.BackgroundColor3 = Color3.new(0, 0, 0)
 background.BackgroundTransparency = 0.4
 background.Visible = true
 background.Parent = gui
 
+-- Top Title
 local topText = Instance.new("TextLabel")
 topText.Size = UDim2.new(1, 0, 0.1, 0)
 topText.Position = UDim2.new(0, 0, 0, 0)
@@ -27,6 +27,7 @@ topText.TextScaled = true
 topText.Font = Enum.Font.FredokaOne
 topText.Parent = background
 
+-- Time Label
 local timeLabel = Instance.new("TextLabel")
 timeLabel.Size = UDim2.new(1, 0, 0.04, 0)
 timeLabel.Position = UDim2.new(0, 0, 0.9, 0)
@@ -37,13 +38,15 @@ timeLabel.TextScaled = true
 timeLabel.Font = Enum.Font.FredokaOne
 timeLabel.Parent = background
 
+-- Logo
 local logo = Instance.new("ImageLabel")
 logo.Size = UDim2.new(0, 200, 0, 200)
 logo.Position = UDim2.new(0.5, -100, 0.4, -100)
 logo.BackgroundTransparency = 1
-logo.Image = "rbxassetid://ID_IMAGE"
+logo.Image = "rbxassetid://ID_IMAGE" -- Thay ID tại đây nếu có
 logo.Parent = background
 
+-- Info Label
 local infoLabel = Instance.new("TextLabel")
 infoLabel.Size = UDim2.new(0.95, 0, 0.05, 0)
 infoLabel.Position = UDim2.new(0.025, 0, 0.94, 0)
@@ -55,6 +58,7 @@ infoLabel.RichText = true
 infoLabel.Text = "Loading..."
 infoLabel.Parent = background
 
+-- Toggle Button
 local toggleButton = Instance.new("TextButton")
 toggleButton.Size = UDim2.new(0, 120, 0, 40)
 toggleButton.Position = UDim2.new(0, 15, 0, 70)
@@ -84,7 +88,7 @@ end)
 -- Time Counter
 local seconds = 0
 spawn(function()
-	while wait(1) do
+	while task.wait(1) do
 		seconds += 1
 		local hrs = math.floor(seconds / 3600)
 		local mins = math.floor((seconds % 3600) / 60)
@@ -93,57 +97,32 @@ spawn(function()
 	end
 end)
 
--- Tween effect helper
-local function tweenValue(start, goal, duration, callback)
-	local current = start
-	local t = 0
-	RunService:BindToRenderStep("TweenInfoUpdater", Enum.RenderPriority.First.Value, function(dt)
-		t += dt
-		local alpha = math.clamp(t / duration, 0, 1)
-		current = math.floor(start + (goal - start) * alpha)
-		callback(current)
-		if alpha >= 1 then
-			RunService:UnbindFromRenderStep("TweenInfoUpdater")
-		end
-	end)
-end
-
--- Info Updating with tween
-local prevLevel, prevBeli, prevFrag = 0, 0, 0
+-- Info Updating
 spawn(function()
-	while wait(1) do
+	while task.wait(1) do
 		pcall(function()
+			local realName = player.Name
+			local masked = string.sub(realName, 1, 6) .. string.rep("*", #realName - 6)
 			local level = player.Data.Level.Value
 			local beli = player.Data.Beli.Value
-			local frag = player.Data.Fragments.Value
-			local fullName = player.Name
-			local shortName = string.sub(fullName, 1, 6)
-			local hidden = string.rep("*", math.max(0, #fullName - 6))
+			local frags = player.Data.Fragments.Value
 
-			tweenValue(prevLevel, level, 0.8, function(val)
-				tweenValue(prevBeli, beli, 0.8, function(valB)
-					tweenValue(prevFrag, frag, 0.8, function(valF)
-						infoLabel.Text = string.format(
-							"<font color='rgb(255,255,255)'>Player: %s%s</font> | " ..
-							"<font color='rgb(255,255,0)'>Level: %s</font> | " ..
-							"<font color='rgb(0,255,0)'>Beli: %s</font> | " ..
-							"<font color='rgb(255,0,255)'>Fragments: %s</font>",
-							shortName, hidden,
-							val, valB, valF
-						)
-					end)
-				end)
-			end)
-
-			prevLevel, prevBeli, prevFrag = level, beli, frag
+			infoLabel.Text = string.format(
+				"<font color='rgb(255,255,255)'>Player: %s | </font>" ..
+				"<font color='rgb(255, 255, 0)'>Level: %s</font> | " ..
+				"<font color='rgb(0, 255, 0)'>Beli: %s</font> | " ..
+				"<font color='rgb(255, 0, 255)'>Fragments: %s</font>",
+				masked, level, beli, frags
+			)
 		end)
 	end
 end)
 
--- Music on Execute
+-- Phát nhạc nền
 local sound = Instance.new("Sound")
+sound.Name = "BGM"
 sound.SoundId = "rbxassetid://127343237333461"
 sound.Looped = true
-sound.Volume = 1
-sound.Parent = workspace
+sound.Volume = 5 -- Âm lượng lớn
+sound.Parent = player:WaitForChild("PlayerGui")
 sound:Play()
