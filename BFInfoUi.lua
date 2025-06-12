@@ -41,7 +41,7 @@ local logo = Instance.new("ImageLabel")
 logo.Size = UDim2.new(0, 200, 0, 200)
 logo.Position = UDim2.new(0.5, -100, 0.4, -100)
 logo.BackgroundTransparency = 1
-logo.Image = "rbxassetid://127343237333461"
+logo.Image = "rbxassetid:// "
 logo.Parent = background
 
 local infoLabel1 = Instance.new("TextLabel")
