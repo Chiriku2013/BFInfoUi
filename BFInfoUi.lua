@@ -21,7 +21,7 @@ local topText = Instance.new("TextLabel")
 topText.Size = UDim2.new(1, 0, 0.1, 0)
 topText.Position = UDim2.new(0, 0, 0, 0)
 topText.BackgroundTransparency = 1
-topText.Text = "Blox Fruits Info UI"
+topText.Text = getgenv().BFInfoTopText or "Blox Fruits Info UI"
 topText.TextColor3 = Color3.fromRGB(255, 255, 255)
 topText.TextScaled = true
 topText.Font = Enum.Font.FredokaOne
@@ -41,7 +41,7 @@ local logo = Instance.new("ImageLabel")
 logo.Size = UDim2.new(0, 200, 0, 200)
 logo.Position = UDim2.new(0.5, -100, 0.4, -100)
 logo.BackgroundTransparency = 1
-logo.Image = "rbxassetid:// "
+logo.Image = getgenv().BFInfoLogoId or "rbxassetid:// "
 logo.Parent = background
 
 local infoLabel1 = Instance.new("TextLabel")
