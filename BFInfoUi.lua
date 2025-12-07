@@ -112,7 +112,7 @@ end
 -- Get Race chuẩn theo Character (V1 -> V4)
 local function getRaceInfo()
 	local raceName = "Unknown"
-	local raceVersion = "V1"
+	local raceVersion = ""
 
 	local data = player:FindFirstChild("Data")
 	if data and data:FindFirstChild("Race") then
@@ -121,11 +121,11 @@ local function getRaceInfo()
 
 	local char = player.Character or player.CharacterAdded:Wait()
 	if char:FindFirstChild("RaceV4Button") then
-		raceVersion = "V4"
+		raceVersion = ""
 	elseif char:FindFirstChild("RaceAbility") or char:FindFirstChild("RaceV3Auras") then
-		raceVersion = "V3"
+		raceVersion = ""
 	elseif char:FindFirstChild("RaceTransform") then
-		raceVersion = "V2"
+		raceVersion = ""
 	end
 
 	return raceName .. " " .. raceVersion
